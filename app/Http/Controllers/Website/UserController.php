@@ -12,6 +12,7 @@ use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -84,7 +85,10 @@ class UserController extends Controller
     public function edit(Request $request, $uuid)
     {
         $user = User::where('uuid', $uuid)->firstOrFail();
-        return view('website.pages.user.edit', compact('user'));
+        $departments = Department::orderBy('name', 'ASC')->get();
+        $roles = Role::orderBy('name', 'ASC')->get();
+
+        return view('website.pages.user.edit', compact('user', 'departments', 'roles'));
     }
 
     public function update(Request $request, $uuid)
@@ -92,21 +96,51 @@ class UserController extends Controller
         $user = User::where('uuid', $uuid)->firstOrFail();
     
         $request->validate([
+            'nik' => [
+                'required', 
+                'string', 
+                'size:6', 
+                Rule::unique('users', 'nik')->ignore($user->id),
+            ],
             'name' => 'required|string|max:255',
-            'code' => 'required|string|max:10|unique:users,code,' . $user->id,
+            'email' => [
+                'required', 
+                'string', 
+                'email', 
+                'max:255', 
+                Rule::unique('users', 'email')->ignore($user->id),
+            ],
+            'phone' => 'nullable|string|max:15',
+            'password' => 'nullable|string|min:6',
+            'department' => 'required|array',
+            'role' => 'required',
         ]);
     
         try {
-            $user->update($request->only(['name', 'code']));
+            $updateData = [
+                'nik' => $request->nik,
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+            ];
+    
+            if ($request->filled('password')) {
+                $updateData['password'] = bcrypt($request->password);
+            }
+    
+            $user->update($updateData);
+    
+            $user->departments()->sync($request->department);
+            $user->roles()->sync($request->role);
     
             return redirect()->route('website.user.list')
                                 ->with('success', 'User updated successfully.');
         } catch (\Exception $e) {
-            Log::error('Failed : ' . $e->getMessage());
+            Log::error('Failed to update user: ' . $e->getMessage());
     
             return redirect()->back()
                                 ->withInput()
-                                ->with('error', 'Failed. Please try again.');
+                                ->with('error', 'Failed to update user. Please try again.');
         }
     }
 

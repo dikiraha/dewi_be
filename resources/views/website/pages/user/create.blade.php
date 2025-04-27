@@ -1,4 +1,4 @@
-@extends('website.layouts.main', ['title' => 'Create Department'])
+@extends('website.layouts.main', ['title' => 'Create User'])
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
@@ -6,7 +6,7 @@
             <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="d-flex justify-content-between">
-                        <h5 class="card-header">Create Department</h5>
+                        <h5 class="card-header">Create User</h5>
                         <a href="{{ route('website.user.list') }}" class="btn btn-primary" style="margin: 1.25rem;">List</a>
                     </div>
                     <div class="card-body demo-vertical-spacing demo-only-element">
@@ -66,8 +66,8 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <label for="department">Department <span class="text-danger">*</span></label>
-                                <div class="invalid-feedback">Harap isi Department</div>
+                                <label for="department">User <span class="text-danger">*</span></label>
+                                <div class="invalid-feedback">Harap isi User</div>
                             </div>
 
                             <div class="form-floating form-floating-outline mb-4">
