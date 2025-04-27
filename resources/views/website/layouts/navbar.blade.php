@@ -12,13 +12,13 @@
         </a>
     </div>
     <!-- Search Bar -->
-    <div class="search-bar col-3">
+    {{-- <div class="search-bar col-3">
         <input type="text" id="search-bar" placeholder="Search Form..." class="form-control">
         <!-- Dropdown untuk menampilkan hasil pencarian -->
         <div id="search-results" class="dropdown-menu col-3" style="display: none;">
             <!-- Hasil pencarian akan ditambahkan di sini menggunakan JavaScript -->
         </div>
-    </div>
+    </div> --}}
 
     <div class="navbar-nav-right d-flex align-items-center" id="navbar-collapse">
         <ul class="navbar-nav flex-row align-items-center ms-auto">
