@@ -14,7 +14,7 @@
 
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="{{ asset('img/logo-dewi.png') }}" />
-    <link href="{{ asset('vendor/niceadmin/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
+    <link href="{{ asset('img/logo-dewi.png') }}" rel="apple-touch-icon">
 
     <!-- Fonts -->
     <link rel="stylesheet" href="{{ asset('fonts/inter/fonts.css') }}" />
