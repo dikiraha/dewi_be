@@ -11,20 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('model_has_departments', function (Blueprint $table) {
+        Schema::create('model_has_vendors', function (Blueprint $table) {
             $table->unsignedBigInteger('model_id');
-            $table->unsignedBigInteger('department_id');
+            $table->unsignedBigInteger('vendor_id');
 
-            $table->primary(['model_id', 'department_id']);
+            $table->primary(['model_id', 'vendor_id']);
 
             $table->foreign('model_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade');
 
-            $table->foreign('department_id')
+            $table->foreign('vendor_id')
                 ->references('id')
-                ->on('departments')
+                ->on('vendors')
                 ->onDelete('cascade');
         });
     }
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('model_has_departments');
+        Schema::dropIfExists('model_has_vendors');
     }
 };

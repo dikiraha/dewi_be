@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('goods_receipts', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->string('code', 10)->unique();
-            $table->string('name', 100)->unique();
+            $table->foreignId('purchase_order_id')->constrained('purchase_orders');
+            $table->date('receipt_date');
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('goods_receipts');
     }
 };

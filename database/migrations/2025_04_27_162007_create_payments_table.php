@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->string('code', 10)->unique();
-            $table->string('name', 100)->unique();
+            $table->foreignId('goods_receipt_id')->constrained('goods_receipts');
+            $table->date('payment_date');
+            $table->decimal('amount_paid', 15, 2);
+            $table->enum('status', ['pending', 'paid'])->default('pending');
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('payments');
     }
 };

@@ -79,22 +79,18 @@ class AuthController extends Controller
         ];
         
         if (Auth::attempt($credentials)) {
-            // Berhasil login
             $user = Auth::user();
             $token = JWTAuth::fromUser($user);
-            
+    
             if ($request->expectsJson() || $request->is('api/*')) {
-                // Kalau request dari API
                 return response()->json([
                     'success' => true,
                     'token' => $token,
                 ]);
             } else {
-                // Kalau request dari web biasa
-                return redirect()->route('website.home')->with('token', $token);
+                return redirect()->route('website.home');
             }
         } else {
-            // Gagal login
             if ($request->expectsJson() || $request->is('api/*')) {
                 return response()->json([
                     'error' => 'Email/NIK atau password salah',
@@ -115,5 +111,12 @@ class AuthController extends Controller
     public function loginPage()
     {
         return view('website.auth.login');
+    }
+
+    public function logout()
+    {
+        Auth::logout();
+
+        return redirect()->route('website.login');
     }
 }

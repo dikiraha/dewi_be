@@ -11,11 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('approvals', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->string('code', 10)->unique();
-            $table->string('name', 100)->unique();
+            $table->foreignId('purchase_requisition_id')->constrained('purchase_requisitions');
+            $table->foreignId('approver_id')->constrained('users');
+            $table->enum('status', ['approved', 'rejected', 'pending'])->default('pending');
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('approvals');
     }
 };

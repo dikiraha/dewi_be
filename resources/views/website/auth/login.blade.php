@@ -13,7 +13,7 @@
     <meta name="description" content="" />
 
     <!-- Favicons -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('img/logo-fiola.png') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/logo-dewi.png') }}" />
     <link href="{{ asset('vendor/niceadmin/img/apple-touch-icon.png') }}" rel="apple-touch-icon">
 
     <!-- Fonts -->

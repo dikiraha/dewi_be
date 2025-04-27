@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('quotation_items', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->string('code', 10)->unique();
-            $table->string('name', 100)->unique();
+            $table->foreignId('quotation_id')->constrained('quotations');
+            $table->string('item_name');
+            $table->decimal('unit_price', 15, 2);
+            $table->integer('quantity');
+            $table->decimal('subtotal', 15, 2);
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('quotation_items');
     }
 };

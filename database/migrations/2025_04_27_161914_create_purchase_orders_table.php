@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('departments', function (Blueprint $table) {
+        Schema::create('purchase_orders', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->string('code', 10)->unique();
-            $table->string('name', 100)->unique();
+            $table->foreignId('quotation_id')->constrained('quotations');
+            $table->string('po_number');
+            $table->date('po_date');
+            $table->decimal('total_amount', 15, 2);
+            $table->enum('status', ['issued', 'delivered', 'completed'])->default('issued');
             $table->timestamps();
         });
     }
@@ -25,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('purchase_orders');
     }
 };
