@@ -29,7 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     
         $middleware->group('api', [
-            \Illuminate\Pipeline\Middleware\SubstituteBindings::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
             // \Illuminate\Routing\Middleware\ThrottleRequests::class, // optional
         ]);
     
