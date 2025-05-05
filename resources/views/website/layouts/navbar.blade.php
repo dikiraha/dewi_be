@@ -46,8 +46,24 @@
                                     {{-- <small class="text-muted">
                                         Department
                                     </small> --}}
+                                    @php
+                                        $user = Auth::user()->roles->pluck('name')->implode(', ');
+                                        if ($user == 'user') {
+                                            $role = 'STAFF';
+                                        } elseif ($user == 'admin') {
+                                            $role = 'ADMIN';
+                                        } elseif ($user == 'approver') {
+                                            $role = 'SUPERVISOR';
+                                        } elseif ($user == 'vendor') {
+                                            $role = 'VENDOR';
+                                        } else {
+                                            $role = '';
+                                        }
+
+                                    @endphp
                                     <small class="text-muted">
-                                        {{ Auth::user()->departments->pluck('code')->implode(', ') }}
+                                        {{ Auth::user()->departments->pluck('code')->implode(', ') }} -
+                                        {{ $role }}
                                     </small>
                                     {{-- <p>
                                         {{ Auth::user()->roles->pluck('name')->implode(', ') }}

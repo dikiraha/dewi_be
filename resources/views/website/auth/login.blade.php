@@ -90,7 +90,7 @@
                             </div>
                         @endif
                         <form id="formAuthentication" class="mb-3" method="post"
-                            action="{{ route('website.login') }}">
+                            action="{{ route('website.auth.login') }}">
                             @csrf
                             {{-- <div class="form-floating form-floating-outline mb-3">
                                 <select name="company" id="company" class="form-control">

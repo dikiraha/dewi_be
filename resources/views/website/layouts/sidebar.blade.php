@@ -146,52 +146,53 @@
         </li>
 
         <!-- Master -->
-        <li class="menu-header fw-medium mt-4"><span class="menu-header-text">Master</span></li>
-        @php
-            $departmentRoutes = ['website.department.list', 'website.department.create', 'website.department.edit'];
-        @endphp
-        <li class="menu-item {{ in_array(Route::currentRouteName(), $departmentRoutes) ? 'active' : '' }}">
-            <a href="{{ route('website.department.list') }}" class="menu-link">
-                <i class="menu-icon tf-icons mdi mdi-office-building"></i>
-                <div data-i18n="Departments">Departments</div>
-            </a>
-        </li>
+        @if (Auth::user()->hasRole('admin'))
+            <li class="menu-header fw-medium mt-4"><span class="menu-header-text">Master</span></li>
+            @php
+                $departmentRoutes = ['website.department.list', 'website.department.create', 'website.department.edit'];
+            @endphp
+            <li class="menu-item {{ in_array(Route::currentRouteName(), $departmentRoutes) ? 'active' : '' }}">
+                <a href="{{ route('website.department.list') }}" class="menu-link">
+                    <i class="menu-icon tf-icons mdi mdi-office-building"></i>
+                    <div data-i18n="Departments">Departments</div>
+                </a>
+            </li>
 
-        @php
-            $roleRoutes = ['website.role.list', 'website.role.create', 'website.role.edit'];
-        @endphp
-        <li class="menu-item {{ in_array(Route::currentRouteName(), $roleRoutes) ? 'active' : '' }}">
-            <a href="{{ route('website.role.list') }}" class="menu-link">
-                <i class="menu-icon tf-icons mdi mdi-account-cog"></i>
-                <div data-i18n="Roles">Roles</div>
-            </a>
-        </li>
+            @php
+                $roleRoutes = ['website.role.list', 'website.role.create', 'website.role.edit'];
+            @endphp
+            <li class="menu-item {{ in_array(Route::currentRouteName(), $roleRoutes) ? 'active' : '' }}">
+                <a href="{{ route('website.role.list') }}" class="menu-link">
+                    <i class="menu-icon tf-icons mdi mdi-account-cog"></i>
+                    <div data-i18n="Roles">Roles</div>
+                </a>
+            </li>
 
-        <li class="menu-item {{ Route::is('website.setting.list') ? 'active' : '' }}">
-            <a href="{{ route('website.setting.list') }}" class="menu-link">
-                <i class="menu-icon tf-icons mdi mdi-cog"></i>
-                <div data-i18n="Settings">Settings</div>
-            </a>
-        </li>
+            <li class="menu-item {{ Route::is('website.setting.list') ? 'active' : '' }}">
+                <a href="{{ route('website.setting.list') }}" class="menu-link">
+                    <i class="menu-icon tf-icons mdi mdi-cog"></i>
+                    <div data-i18n="Settings">Settings</div>
+                </a>
+            </li>
 
-        @php
-            $userRoutes = ['website.user.list', 'website.user.create', 'website.user.edit'];
-        @endphp
-        <li class="menu-item {{ in_array(Route::currentRouteName(), $userRoutes) ? 'active' : '' }}">
-            <a href="{{ route('website.user.list') }}" class="menu-link">
-                <i class="menu-icon tf-icons mdi mdi-account-multiple"></i>
-                <div data-i18n="Users">Users</div>
-            </a>
-        </li>
-
-        @php
-            $vendorRoutes = ['website.vendor.list', 'website.vendor.create', 'website.vendor.edit'];
-        @endphp
-        <li class="menu-item {{ in_array(Route::currentRouteName(), $vendorRoutes) ? 'active' : '' }}">
-            <a href="#" class="menu-link">
-                <i class="menu-icon tf-icons mdi mdi-town-hall"></i>
-                <div data-i18n="Vendors">Vendors</div>
-            </a>
-        </li>
+            @php
+                $userRoutes = ['website.user.list', 'website.user.create', 'website.user.edit'];
+            @endphp
+            <li class="menu-item {{ in_array(Route::currentRouteName(), $userRoutes) ? 'active' : '' }}">
+                <a href="{{ route('website.user.list') }}" class="menu-link">
+                    <i class="menu-icon tf-icons mdi mdi-account-multiple"></i>
+                    <div data-i18n="Users">Users</div>
+                </a>
+            </li>
+            @php
+                $vendorRoutes = ['website.vendor.list', 'website.vendor.create', 'website.vendor.edit'];
+            @endphp
+            <li class="menu-item {{ in_array(Route::currentRouteName(), $vendorRoutes) ? 'active' : '' }}">
+                <a href="#" class="menu-link">
+                    <i class="menu-icon tf-icons mdi mdi-town-hall"></i>
+                    <div data-i18n="Vendors">Vendors</div>
+                </a>
+            </li>
+        @endif
     </ul>
 </aside>

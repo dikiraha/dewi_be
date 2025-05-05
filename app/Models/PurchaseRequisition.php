@@ -19,4 +19,19 @@ class PurchaseRequisition extends Model
             $model->uuid = (string) Str::uuid();
         });
     }
+
+    public function items()
+    {
+        return $this->hasMany(PurchaseRequisitionItem::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
+    public function department()
+    {
+        return $this->belongsTo(Department::class);
+    }
 }

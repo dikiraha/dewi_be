@@ -66,8 +66,8 @@
                                         </option>
                                     @endforeach
                                 </select>
-                                <label for="department">User <span class="text-danger">*</span></label>
-                                <div class="invalid-feedback">Harap isi User</div>
+                                <label for="department">Department <span class="text-danger">*</span></label>
+                                <div class="invalid-feedback">Harap isi Department</div>
                             </div>
 
                             <div class="form-floating form-floating-outline mb-4">

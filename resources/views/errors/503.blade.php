@@ -8,7 +8,7 @@
     <meta name="viewport"
         content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>DEWI &mdash; NOT FOUND</title>
+    <title>DEWI &mdash; MAINTENANCE</title>
 
     <meta name="description" content="" />
 
@@ -50,8 +50,8 @@
 
     <!-- Error -->
     <div class="misc-wrapper">
-        <h1 class="mb-2 mx-2" style="font-size: 6rem">404</h1>
-        <h4 class="mb-2">Not Found ⚠️</h4>
+        <h1 class="mb-2 mx-2" style="font-size: 6rem">503</h1>
+        <h4 class="mb-2">Service Unavailable ⚠️</h4>
         {{-- <p class="mb-4 mx-2">we couldn't find the page you are looking for</p> --}}
         <div class="d-flex justify-content-center mt-5">
             <img src="{{ asset('vendor/materio/assets/img/illustrations/tree.png') }}" alt="misc-tree"
@@ -60,11 +60,11 @@
                 class="scaleX-n1-rtl misc-bg d-none d-lg-inline-block"
                 data-app-light-img="illustrations/misc-mask-light.png"
                 data-app-dark-img="illustrations/misc-mask-dark.png" />
-            <div class="d-flex flex-column align-items-center">
+            {{-- <div class="d-flex flex-column align-items-center">
                 <div>
                     <a href="{{ route('website.home') }}" class="btn btn-primary text-center my-4">Back</a>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
     <!-- /Error -->

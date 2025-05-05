@@ -35,6 +35,8 @@ return Application::configure(basePath: dirname(__DIR__))
     
         $middleware->alias([
             'auth' => \App\Http\Middleware\Authenticate::class,
+            'auth.api' => \App\Http\Middleware\AuthenticateApi::class,
+            'auth.web' => \App\Http\Middleware\AuthenticateWeb::class,
             'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         ]);
     })

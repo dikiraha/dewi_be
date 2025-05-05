@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Department;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\JsonResponse;
 
 class DepartmentController extends Controller
 {
@@ -30,7 +31,7 @@ class DepartmentController extends Controller
         return view('website.pages.department.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): JsonResponse
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -38,16 +39,19 @@ class DepartmentController extends Controller
         ]);
     
         try {
-            Department::create($request->only(['name', 'code']));
+            $department = Department::create($request->only(['name', 'code']));
     
-            return redirect()->route('website.department.list')
-                                ->with('success', 'Department created successfully.');
+            return response()->json([
+                'message' => 'Department created successfully.',
+                'data' => $department,
+            ], 201); // 201 Created
         } catch (\Exception $e) {
-            Log::error('Failed : ' . $e->getMessage());
+            Log::error('Department creation failed: ' . $e->getMessage());
     
-            return redirect()->back()
-                                ->withInput()
-                                ->with('error', 'Failed. Please try again.');
+            return response()->json([
+                'message' => 'Failed to create department.',
+                'error' => $e->getMessage(), // optional: remove in production
+            ], 500);
         }
     }
 

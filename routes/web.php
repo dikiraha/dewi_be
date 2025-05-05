@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Website\AuthController;
 use App\Http\Controllers\Website\HomeController;
 use App\Http\Controllers\Website\VendorController;
 use App\Http\Controllers\Website\DepartmentController;
@@ -14,10 +14,10 @@ use App\Http\Controllers\Website\RoleController;
 // });
 
 Route::group(['namespace' => 'Website', 'as' => 'website.'], function() {
-    Route::get('/login', [AuthController::class, 'loginPage'])->name('loginPage');
-    Route::post('/login', [AuthController::class, 'login'])->name('login');
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('showLoginForm');
+    Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 
-    Route::middleware('auth')->group(function () {
+    Route::middleware(['auth.web'])->group(function () {
         Route::get('/', [HomeController::class, 'home'])->name('home');
         Route::get('/home_ajax', [HomeController::class, 'home_ajax'])->name('home_ajax');
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

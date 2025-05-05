@@ -16,14 +16,24 @@ class Authenticate
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
-            if ($request->expectsJson() || $request->is('api/*')) {
-                return response()->json(['message' => 'Unauthenticated.'], 401);
-            } else {
-                return redirect()->route('website.loginPage');
-            }
-        }
+        try {
+            $isApi = $request->expectsJson() || $request->is('api/*');
 
-        return $next($request);
+            if ($isApi) {
+                if (!auth('api')->check()) {
+                    return response()->json(['message' => 'Unauthenticated.'], 401);
+                }
+            } else {
+                if (!auth()->check()) {
+                    return redirect()->route('website.showLoginForm');
+                }
+            }
+
+            return $next($request);
+        } catch (\Exception $e) {
+            return $isApi
+                ? response()->json(['message' => 'Token error: ' . $e->getMessage()], 401)
+                : redirect()->route('website.showLoginForm')->with('error', 'Token error.');
+        }
     }
 }

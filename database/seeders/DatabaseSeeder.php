@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Department;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,13 +15,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
-        User::factory()->create([
+        $admin = User::factory()->create([
             'nik' => '000000',
             'name' => 'Administrator',
             'email' => 'administrator@dewi.my.id',
             'password' => bcrypt('nimda'),
         ]);
+
+        $roles = ['admin', 'user', 'approver', 'vendor'];
+        foreach ($roles as $role) {
+            Role::firstOrCreate([
+                'name' => $role,
+                'guard_name' => 'web'
+            ]);
+        }
+
+        Department::create([
+            'code' => 'PUR',
+            'name' => 'Purchasing',
+        ]);
+
+        $admin->assignRole('admin');
+        $admin->departments()->sync(1);
     }
 }
