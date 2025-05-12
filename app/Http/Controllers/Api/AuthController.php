@@ -34,7 +34,19 @@ class AuthController extends Controller
     
         // Jika dari API/Mobile (Ionic)
         if ($request->expectsJson()) {
-            return $this->respondWithToken($token);
+            $user = auth('api')->user();
+            return response()->json([
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'user' => [
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'nik' => $user->nik,
+                    'phone' => $user->phone,
+                    'roles' => $user->roles->pluck('name'), // jika pakai Spatie
+                    'department' => optional($user->departments->first())->name, // sesuaikan relasi
+                ]
+            ]);
         }
     
         // Jika dari Web: login session biasa

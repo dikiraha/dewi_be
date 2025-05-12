@@ -3,8 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PurchaseRequisitionController;
+use App\Http\Controllers\Api\ForgotPasswordController;
 use App\Http\Controllers\Website\HomeController;
 use App\Http\Controllers\Website\DepartmentController;
+
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 
 Route::group(['namespace' => 'Website', 'as' => 'website.'], function() {
     Route::post('/register', [AuthController::class, 'register'])->name('api.register');

@@ -8,10 +8,12 @@ use App\Http\Controllers\Website\DepartmentController;
 use App\Http\Controllers\Website\UserController;
 use App\Http\Controllers\Website\SettingController;
 use App\Http\Controllers\Website\RoleController;
+use App\Http\Controllers\Website\ResetPasswordController;
 
 // Route::get('/', function () {
 //     return view('welcome');
 // });
+Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 
 Route::group(['namespace' => 'Website', 'as' => 'website.'], function() {
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('showLoginForm');

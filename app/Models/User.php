@@ -11,6 +11,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Traits\HasPermissions;
 use Illuminate\Support\Str;
+use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -23,12 +24,13 @@ class User extends Authenticatable implements JWTSubject
      * @var list<string>
      */
     protected $table = 'users';
-    protected $guarded = ['id'];
-    // protected $fillable = [
-    //     'name',
-    //     'email',
-    //     'password',
-    // ];
+    // protected $guarded = ['id'];
+    protected $fillable = [
+        'name',
+        'email',
+        'phone',
+        'password',
+    ];
     
     protected static function boot()
     {
@@ -77,5 +79,10 @@ class User extends Authenticatable implements JWTSubject
     public function departments()
     {
         return $this->belongsToMany(Department::class,'model_has_departments','model_id','department_id');
+    }
+
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token, $this->email));
     }
 }
