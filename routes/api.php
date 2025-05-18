@@ -19,6 +19,7 @@ Route::group(['namespace' => 'Website', 'as' => 'website.'], function() {
 
         Route::group(['prefix' => 'pr', 'as' => 'pr.'], function () {
             Route::post('/store', [PurchaseRequisitionController::class, 'store'])->name('store');
+            Route::get('/list_ajax', [PurchaseRequisitionController::class, 'list_ajax'])->name('list_ajax');
             Route::get('/approval_ajax', [PurchaseRequisitionController::class, 'approval_ajax'])->name('approval_ajax');
             Route::post('/approval', [PurchaseRequisitionController::class, 'approval'])->name('approval');
         });

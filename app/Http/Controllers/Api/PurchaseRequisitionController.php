@@ -18,6 +18,7 @@ class PurchaseRequisitionController extends Controller
             'title' => 'required',
             'items' => 'required|array|min:1',
             'items.*.item_name' => 'required|string',
+            'items.*.specification' => 'nullable|string',
             'items.*.quantity' => 'required|numeric|min:1',
             'items.*.unit' => 'required|string',
             'items.*.unit_price' => 'required|numeric|min:0',
@@ -44,7 +45,7 @@ class PurchaseRequisitionController extends Controller
             'user_id' => $user->id,
             'department_id' => $department->id,
             'description' => $request->description,
-            'status' => 'created',
+            'status' => 'Created',
             'total_amount' => 0,
         ]);
 
@@ -57,6 +58,7 @@ class PurchaseRequisitionController extends Controller
             $purchase_requisition->items()->create([
                 'purchase_requisition_id' => $purchase_requisition->id,
                 'item_name' => $item['item_name'],
+                'specification' => $item['specification'] ?? null,
                 'quantity' => $item['quantity'],
                 'unit' => $item['unit'],
                 'unit_price' => $item['unit_price'],
@@ -74,13 +76,15 @@ class PurchaseRequisitionController extends Controller
         ], 201);
     }
 
-    public function approval_ajax(Request $request)
+    public function list_ajax(Request $request)
     {
         $user = auth('api')->user();
+        
         $departmentIds = $user->departments->pluck('id');
 
         $data = PurchaseRequisition::with(['user', 'items'])
             ->whereIn('department_id', $departmentIds)
+            ->where('user_id', $user->id)
             ->where('status', 'created')
             ->orderByDesc('created_at')
             ->get();
@@ -91,25 +95,54 @@ class PurchaseRequisitionController extends Controller
         ]);
     }
 
-    public function approval(Request $request, $id)
+    public function approval_ajax(Request $request)
+    {
+        $user = auth('api')->user();
+
+        if ($user && $user->hasRole('approver')) {
+            $departmentIds = $user->departments->pluck('id');
+    
+            $data = PurchaseRequisition::with(['user', 'items'])
+                ->whereIn('department_id', $departmentIds)
+                ->where('status', 'created')
+                ->orderByDesc('created_at')
+                ->get();
+    
+            return response()->json([
+                'message' => 'Data loaded successfully',
+                'data' => $data,
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Unauthorized',
+            ], 403);
+        }
+    }
+
+    public function approval(Request $request)
     {
         $request->validate([
-            'status' => 'required|in:approved,rejected',
-            'note' => 'nullable|string',
+            'uuid' => 'required|exists:purchase_requisitions,uuid',
+            'status' => 'required',
         ]);
 
-        $purchaseRequisition = PurchaseRequisition::findOrFail($id);
+        $purchaseRequisition = PurchaseRequisition::where('uuid', $request->uuid)->firstOrFail();
 
         $user = auth('api')->user();
+
+        if ($user->hasRole('user')) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+
         if (!$user->departments->pluck('id')->contains($purchaseRequisition->department_id)) {
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
         $purchaseRequisition->update([
+            'purchase_requisition_id' => $purchaseRequisition->id,
+            'approver_id' => $user->id,
             'status' => $request->status,
-            'approval_note' => $request->note,
-            'approved_by' => $user->id,
-            'approved_at' => now(),
+            'note' => $request->note,
         ]);
 
         return response()->json([

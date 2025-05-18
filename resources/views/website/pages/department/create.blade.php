@@ -7,8 +7,6 @@
                 <div class="card mb-4">
                     <div class="d-flex justify-content-between">
                         <h5 class="card-header">Create Department</h5>
-                        <a href="{{ route('website.department.list') }}" class="btn btn-primary"
-                            style="margin: 1.25rem;">List</a>
                     </div>
                     <div class="card-body demo-vertical-spacing demo-only-element">
                         @if ($errors->any())
@@ -19,8 +17,7 @@
                                         <li>{{ $error }}</li>
                                     @endforeach
                                 </ul>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
                         <form method="post" action="{{ route('website.department.store') }}" id="myForm"
@@ -28,7 +25,7 @@
                             @csrf
                             <div class="form-floating form-floating-outline mb-4">
                                 <input type="text" class="form-control" id="code" name="code"
-                                    value="{{ old('code') }}" placeholder="ITD" required autofocus>
+                                    value="{{ old('code') }}" placeholder="ITD" maxlength="10" required autofocus>
                                 <label for="code">Code <span class="text-danger">*</span></label>
                                 <div class="invalid-feedback">Harap isi Code</div>
                             </div>
@@ -38,7 +35,8 @@
                                 <label for="name">Name <span class="text-danger">*</span></label>
                                 <div class="invalid-feedback">Harap isi Name</div>
                             </div>
-                            <div class="d-flex justify-content-end">
+                            <div class="d-flex justify-content-between">
+                                <a href="{{ route('website.department.list') }}" class="btn btn-secondary">Back</a>
                                 <button type="submit" class="btn btn-success" id="submitButton">Submit</button>
                             </div>
                         </form>
@@ -53,6 +51,16 @@
 @endpush
 
 @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const codeInput = document.getElementById('code');
+
+            codeInput.addEventListener('input', function() {
+                this.value = this.value.toUpperCase();
+            });
+        });
+    </script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var form = document.getElementById('myForm');

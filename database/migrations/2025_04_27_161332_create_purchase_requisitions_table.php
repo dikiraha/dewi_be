@@ -19,7 +19,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users');
             $table->foreignId('department_id')->constrained('departments');
             $table->text('description')->nullable();
-            $table->enum('status', ['created', 'approved', 'rejected'])->default('created');
+            $table->enum('status', ['Created', 'Approved by Manager', 'Rejected by Manager', 'Process by Purchasing', 'Rejected by Purchasing', 'Purchase Order', 'Finished'])->default('Created');
             $table->decimal('total_amount', 15, 2)->default(0);
             $table->timestamps();
         });

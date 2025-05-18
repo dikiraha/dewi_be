@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use Spatie\Permission\Models\Role;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Auth;
 
 class RoleController extends Controller
 {

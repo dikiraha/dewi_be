@@ -13,7 +13,7 @@
     <meta name="description" content="" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('img/logo-fiola.png') }}" />
+    <link rel="icon" type="image/x-icon" href="{{ asset('img/logo-dewi.png') }}" />
 
     <!-- Fonts -->
     <link rel="stylesheet" href="{{ asset('fonts/inter/fonts.css') }}" />

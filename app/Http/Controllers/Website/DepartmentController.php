@@ -8,7 +8,6 @@ use Illuminate\Http\Request;
 use App\Models\Department;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\JsonResponse;
 
 class DepartmentController extends Controller
 {
@@ -31,7 +30,7 @@ class DepartmentController extends Controller
         return view('website.pages.department.create');
     }
 
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -41,23 +40,21 @@ class DepartmentController extends Controller
         try {
             $department = Department::create($request->only(['name', 'code']));
     
-            return response()->json([
-                'message' => 'Department created successfully.',
-                'data' => $department,
-            ], 201); // 201 Created
+            return redirect()->route('website.department.list')
+                                ->with('success', 'Department created successfully.');
         } catch (\Exception $e) {
             Log::error('Department creation failed: ' . $e->getMessage());
     
-            return response()->json([
-                'message' => 'Failed to create department.',
-                'error' => $e->getMessage(), // optional: remove in production
-            ], 500);
+            return redirect()->back()
+                                ->withInput()
+                                ->with('error', 'Failed to create department. Please try again.');
         }
     }
 
     public function edit(Request $request, $uuid)
     {
         $department = Department::where('uuid', $uuid)->firstOrFail();
+        
         return view('website.pages.department.edit', compact('department'));
     }
 
@@ -87,10 +84,15 @@ class DepartmentController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $department = Department::where('uuid', $request->uuid)->firstOrFail();
-            $department->delete();
-    
-            return response()->json(['success' => 'Department deleted successfully.']);
+            if (Auth::user()->hasRole('admin')) {
+                $department = Department::where('uuid', $request->uuid)->firstOrFail();
+                $department->delete();
+        
+                return response()->json(['success' => 'Department deleted successfully.']);
+            } else {
+                return response()->json(['error' => 'Unauthorized.'], 403);
+            }
+            
         } catch (\Exception $e) {
             Log::error('Failed : ' . $e->getMessage());
     

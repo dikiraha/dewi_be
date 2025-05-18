@@ -37,6 +37,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth' => \App\Http\Middleware\Authenticate::class,
             'auth.api' => \App\Http\Middleware\AuthenticateApi::class,
             'auth.web' => \App\Http\Middleware\AuthenticateWeb::class,
+            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         ]);
     })
