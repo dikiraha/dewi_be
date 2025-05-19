@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('goods_receipts', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->foreignId('purchase_order_id')->constrained('purchase_orders');
+            $table->foreignId('purchase_order_id')->constrained('purchase_orders')->onDelete('cascade');;
             $table->date('receipt_date');
             $table->text('note')->nullable();
             $table->timestamps();

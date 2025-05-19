@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rfq_items', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->foreignId('rfq_id')->constrained('rfqs');
+            $table->foreignId('rfq_id')->constrained('rfqs')->onDelete('cascade');;
             $table->string('item_name');
             $table->integer('quantity');
             $table->string('unit', 50);

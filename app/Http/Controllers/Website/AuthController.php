@@ -16,13 +16,15 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $login = $request->input('email');
+        // $login = $request->input('email');
+        $email = $request->input('email');
         $password = $request->input('password');
-        
-        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'nik';
+
+        // $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'nik';
         
         $credentials = [
-            $field => $login,
+            // $field => $login,
+            'email' => $email,
             'password' => $password,
         ];
 

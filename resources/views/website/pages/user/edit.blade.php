@@ -7,7 +7,6 @@
                 <div class="card mb-4">
                     <div class="d-flex justify-content-between">
                         <h5 class="card-header">Edit User</h5>
-                        <a href="{{ route('website.user.list') }}" class="btn btn-primary" style="margin: 1.25rem;">List</a>
                     </div>
                     <div class="card-body demo-vertical-spacing demo-only-element">
                         @if ($errors->any())
@@ -18,8 +17,7 @@
                                         <li>{{ $error }}</li>
                                     @endforeach
                                 </ul>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
                         <form method="post" action="{{ route('website.user.update', $user->uuid) }}" id="myForm"
@@ -28,7 +26,7 @@
 
                             <div class="form-floating form-floating-outline mb-4">
                                 <input type="text" class="form-control" id="nik" name="nik"
-                                    value="{{ old('nik', $user->nik) }}" placeholder="000000" required autofocus
+                                    value="{{ old('nik', $user_profile->nik) }}" placeholder="000000" required autofocus
                                     maxlength="6" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                                 <label for="nik">NIK <span class="text-danger">*</span></label>
                                 <div class="invalid-feedback">Harap isi NIK</div>
@@ -51,7 +49,7 @@
 
                             <div class="form-floating form-floating-outline mb-4">
                                 <input type="text" class="form-control" id="phone" name="phone"
-                                    value="{{ old('phone', $user->phone) }}" placeholder="081234567890" required
+                                    value="{{ old('phone', $user_profile->phone) }}" placeholder="081234567890" required
                                     maxlength="15" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                                 <label for="phone">Phone Number <span class="text-danger">*</span></label>
                                 <div class="invalid-feedback">Harap isi Phone Number</div>
@@ -94,7 +92,8 @@
                                 <small class="text-muted">Kosongkan jika tidak ingin mengubah password</small>
                             </div>
 
-                            <div class="d-flex justify-content-end">
+                            <div class="d-flex justify-content-between">
+                                <a href="{{ route('website.user.list') }}" class="btn btn-secondary">Back</a>
                                 <button type="submit" class="btn btn-success" id="submitButton">Submit</button>
                             </div>
                         </form>

@@ -57,10 +57,12 @@
     <script src="{{ asset('vendor/datatables/js/datatables.min.js') }}"></script>
     <script>
         $(document).ready(function() {
-            @if (session()->has('success'))
-                toastr['success']("{{ Session('success') }}")
-            @endif
-        })
+            @foreach (['success', 'error', 'warning', 'info'] as $msg)
+                @if (session()->has($msg))
+                    toastr["{{ $msg }}"]("{{ session($msg) }}");
+                @endif
+            @endforeach
+        });
     </script>
     <script>
         $(document).ready(function() {

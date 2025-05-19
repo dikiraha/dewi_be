@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use App\Models\Department;
+use App\Models\UserProfile;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
@@ -16,7 +17,6 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $admin = User::factory()->create([
-            'nik' => '000000',
             'name' => 'Administrator',
             'email' => 'administrator@dewi.my.id',
             'password' => bcrypt('nimda'),
@@ -37,5 +37,10 @@ class DatabaseSeeder extends Seeder
 
         $admin->assignRole('admin');
         $admin->departments()->sync(1);
+
+        UserProfile::create([
+            'user_id' => $admin->id,
+            'nik' => '000000'
+        ]);
     }
 }

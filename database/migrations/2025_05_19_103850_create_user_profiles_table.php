@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('approvals', function (Blueprint $table) {
+        Schema::create('user_profiles', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->foreignId('purchase_requisition_id')->constrained('purchase_requisitions')->onDelete('cascade');;
-            $table->foreignId('approver_id')->constrained('users');
-            $table->enum('status', ['approved', 'rejected', 'pending'])->default('pending');
-            $table->text('note')->nullable();
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('nik', 6)->unique();
+            $table->enum('gender', ['Laki-laki', 'Perempuan'])->nullable();
+            $table->string('phone', 15)->nullable();
+            $table->string('photo')->nullable();
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('approvals');
+        Schema::dropIfExists('user_profiles');
     }
 };

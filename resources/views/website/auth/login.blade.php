@@ -71,7 +71,7 @@
                 <div class="card p-2">
                     <!-- Logo -->
                     <div class="app-brand justify-content-center mt-5">
-                        <a href="#" class="app-brand-link gap-2">
+                        <a href="{{ route('website.auth.login') }}" class="app-brand-link gap-2">
                             <span class="app-brand-text demo text-heading fw-semibold"
                                 style="color: #9055fd !important; font-size: 36px;">DEWI</span>
                         </a>
@@ -92,17 +92,10 @@
                         <form id="formAuthentication" class="mb-3" method="post"
                             action="{{ route('website.auth.login') }}">
                             @csrf
-                            {{-- <div class="form-floating form-floating-outline mb-3">
-                                <select name="company" id="company" class="form-control">
-                                    <option value="AIIA">AIIA</option>
-                                    <option value="AII">AII</option>
-                                </select>
-                                <label for="company">Company</label>
-                            </div> --}}
                             <div class="form-floating form-floating-outline mb-3">
-                                <input type="text" class="form-control" id="email" name="email"
-                                    placeholder="NIK 6 digit / email anda" autofocus />
-                                <label for="email">NIK or Email</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    placeholder="Masukkan email anda" autofocus required />
+                                <label for="email">Email</label>
                             </div>
                             <div class="mb-5">
                                 <div class="form-password-toggle">

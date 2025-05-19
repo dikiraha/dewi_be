@@ -92,7 +92,6 @@ class DepartmentController extends Controller
             } else {
                 return response()->json(['error' => 'Unauthorized.'], 403);
             }
-            
         } catch (\Exception $e) {
             Log::error('Failed : ' . $e->getMessage());
     

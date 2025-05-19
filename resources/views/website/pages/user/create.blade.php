@@ -7,7 +7,6 @@
                 <div class="card mb-4">
                     <div class="d-flex justify-content-between">
                         <h5 class="card-header">Create User</h5>
-                        <a href="{{ route('website.user.list') }}" class="btn btn-primary" style="margin: 1.25rem;">List</a>
                     </div>
                     <div class="card-body demo-vertical-spacing demo-only-element">
                         @if ($errors->any())
@@ -18,8 +17,7 @@
                                         <li>{{ $error }}</li>
                                     @endforeach
                                 </ul>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                    aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                             </div>
                         @endif
                         <form method="post" action="{{ route('website.user.store') }}" id="myForm"
@@ -93,7 +91,8 @@
                                 <div class="invalid-feedback">Harap isi Password</div>
                             </div>
 
-                            <div class="d-flex justify-content-end">
+                            <div class="d-flex justify-content-between">
+                                <a href="{{ route('website.user.list') }}" class="btn btn-secondary">Back</a>
                                 <button type="submit" class="btn btn-success" id="submitButton">Submit</button>
                             </div>
                         </form>
@@ -110,6 +109,15 @@
 
 @push('scripts')
     <script src="{{ asset('vendor/select2/select2.min.js') }}"></script>
+    <script>
+        $(document).ready(function() {
+            @foreach (['success', 'error', 'warning', 'info'] as $msg)
+                @if (session()->has($msg))
+                    toastr["{{ $msg }}"]("{{ session($msg) }}");
+                @endif
+            @endforeach
+        });
+    </script>
     <script>
         $(document).ready(function() {
             $('#department').select2({

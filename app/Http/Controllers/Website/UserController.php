@@ -13,6 +13,7 @@ use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -26,6 +27,8 @@ class UserController extends Controller
         $data = User::query()
             ->select([
                 'users.*',
+                'user_profiles.nik',
+                'user_profiles.phone',
                 DB::raw('GROUP_CONCAT(DISTINCT departments.code ORDER BY departments.code ASC SEPARATOR \', \') as department'),
                 'roles.name as role'
             ])
@@ -33,9 +36,10 @@ class UserController extends Controller
             ->join('departments', 'model_has_departments.department_id', '=', 'departments.id')
             ->join('model_has_roles', 'users.id', '=', 'model_has_roles.model_id')
             ->join('roles', 'model_has_roles.role_id', '=', 'roles.id')
-            ->groupBy('users.id', 'roles.name')
+            ->join('user_profiles', 'users.id', '=', 'user_profiles.user_id')
+            ->groupBy('users.id', 'user_profiles.nik', 'user_profiles.phone', 'roles.name')
             ->orderBy('users.name', 'ASC');
-    
+
         return DataTables::eloquent($data)->make(true);
     }
 
@@ -50,7 +54,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nik' => 'required|string|min:6|max:6|unique:users,nik',
+            'nik' => 'required|string|min:6|max:6|unique:user_profiles,nik',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
             'password' => 'required|string|min:6',
@@ -59,13 +63,15 @@ class UserController extends Controller
         ]);
     
         try {
-            // User::create($request->only(['name', 'code']));
             $user = User::create([
-                'nik' => $request->nik,
                 'name' => $request->name,
                 'email' => $request->email,
-                'phone' => $request->phone,
                 'password' => bcrypt($request->password),
+            ]);
+
+            $user_profile = $user->user_profile()->create([
+                'nik' => $request->nik,
+                'phone' => $request->phone,
             ]);
 
             $user->departments()->sync($request->department);
@@ -85,29 +91,31 @@ class UserController extends Controller
     public function edit(Request $request, $uuid)
     {
         $user = User::where('uuid', $uuid)->firstOrFail();
+        $user_profile = $user->user_profile;
         $departments = Department::orderBy('name', 'ASC')->get();
         $roles = Role::orderBy('name', 'ASC')->get();
 
-        return view('website.pages.user.edit', compact('user', 'departments', 'roles'));
+        return view('website.pages.user.edit', compact('user', 'user_profile', 'departments', 'roles'));
     }
 
     public function update(Request $request, $uuid)
     {
         $user = User::where('uuid', $uuid)->firstOrFail();
+        $user_profile = $user->user_profile;
     
         $request->validate([
             'nik' => [
                 'required', 
                 'string', 
                 'size:6', 
-                Rule::unique('users', 'nik')->ignore($user->id),
+                Rule::unique('user_profiles', 'nik')->ignore($user->id),
             ],
             'name' => 'required|string|max:255',
             'email' => [
                 'required', 
                 'string', 
                 'email', 
-                'max:255', 
+                'max:255',
                 Rule::unique('users', 'email')->ignore($user->id),
             ],
             'phone' => 'nullable|string|max:15',
@@ -118,10 +126,8 @@ class UserController extends Controller
     
         try {
             $updateData = [
-                'nik' => $request->nik,
                 'name' => $request->name,
                 'email' => $request->email,
-                'phone' => $request->phone,
             ];
     
             if ($request->filled('password')) {
@@ -129,6 +135,10 @@ class UserController extends Controller
             }
     
             $user->update($updateData);
+            $user_profile->update([
+                'nik' => $request->nik,
+                'phone' => $request->phone,
+            ]);
     
             $user->departments()->sync($request->department);
             $user->roles()->sync($request->role);
@@ -147,10 +157,14 @@ class UserController extends Controller
     public function destroy(Request $request)
     {
         try {
-            $user = User::where('uuid', $request->uuid)->firstOrFail();
-            $user->delete();
-    
-            return response()->json(['success' => 'User deleted successfully.']);
+            if (Auth::user()->hasRole('admin')) {
+                $user = User::where('uuid', $request->uuid)->firstOrFail();
+                $user->delete();
+                
+                return response()->json(['success' => 'User deleted successfully.']);
+            } else {
+                return response()->json(['error' => 'Unauthorized.'], 403);
+            }
         } catch (\Exception $e) {
             Log::error('Failed : ' . $e->getMessage());
     

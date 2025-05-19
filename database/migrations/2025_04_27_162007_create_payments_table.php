@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->foreignId('goods_receipt_id')->constrained('goods_receipts');
+            $table->foreignId('goods_receipt_id')->constrained('goods_receipts')->onDelete('cascade');;
             $table->date('payment_date');
             $table->decimal('amount_paid', 15, 2);
             $table->enum('status', ['pending', 'paid'])->default('pending');

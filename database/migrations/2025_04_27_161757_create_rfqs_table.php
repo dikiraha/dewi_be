@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('rfqs', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->foreignId('purchase_requisition_id')->constrained('purchase_requisitions');
+            $table->foreignId('purchase_requisition_id')->constrained('purchase_requisitions')->onDelete('cascade');;
             $table->date('rfq_date');
             $table->enum('status', ['open', 'closed'])->default('open');
             $table->timestamps();
