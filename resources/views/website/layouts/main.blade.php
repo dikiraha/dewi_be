@@ -11,7 +11,6 @@
     <title>DEWI &mdash; {{ $title }}</title>
 
     <meta name="description" content="" />
-    {{-- <meta http-equiv="refresh" content="2"> --}}
 
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="{{ asset('img/logo-dewi.png') }}" />
@@ -19,6 +18,7 @@
     <!-- Fonts -->
     <link rel="stylesheet" href="{{ asset('fonts/inter/fonts.css') }}" />
 
+    {{-- Icons --}}
     <link rel="stylesheet" href="{{ asset('vendor/materio/assets/vendor/fonts/materialdesignicons.css') }}" />
 
     <!-- Menu waves for no-customizer fix -->
@@ -54,12 +54,6 @@
             }
         }
 
-        /* Ensure layout-menu is visible by default */
-        /* .layout-menu {
-            display: relative;
-        } */
-
-        /* Ensure the button is visible only on large screens */
         @media (min-width: 1200px) {
             .d-xl-block {
                 display: block !important;
@@ -70,24 +64,18 @@
             }
         }
 
-        /* Hide sidebar when sidebar-collapsed class is applied */
         .layout-container.sidebar-collapsed .layout-menu {
             display: none;
         }
 
-        /* Adjust layout when sidebar is hidden */
         .layout-container.sidebar-collapsed .layout-page {
             padding-left: 0;
-            /* Remove padding when sidebar is hidden */
         }
 
-        /* Adjust content wrapper to occupy full width */
         .layout-container.sidebar-collapsed .content-wrapper {
             margin-left: 0;
-            /* Remove margin when sidebar is hidden */
         }
 
-        /* Ensure the layout-page adjusts when sidebar is hidden */
         .layout-container.sidebar-collapsed .layout-menu-fixed:not(.layout-menu-collapsed) .layout-page,
         .layout-container.sidebar-collapsed .layout-menu-fixed-offcanvas:not(.layout-menu-collapsed) .layout-page {
             padding-left: 0rem;
@@ -145,7 +133,6 @@
     <script src="{{ asset('vendor/materio/assets/vendor/libs/node-waves/node-waves.js') }}"></script>
     <script src="{{ asset('vendor/materio/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
     <script src="{{ asset('vendor/materio/assets/vendor/js/menu.js') }}"></script>
-
     <!-- endbuild -->
 
     <!-- Vendors JS -->

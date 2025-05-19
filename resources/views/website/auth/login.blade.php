@@ -70,10 +70,10 @@
                 <!-- Login -->
                 <div class="card p-2">
                     <!-- Logo -->
-                    <div class="app-brand justify-content-center mt-5">
+                    <div class="app-brand justify-content-center mt-4">
                         <a href="{{ route('website.auth.login') }}" class="app-brand-link gap-2">
                             <span class="app-brand-text demo text-heading fw-semibold"
-                                style="color: #9055fd !important; font-size: 36px;">DEWI</span>
+                                style="color: #3f51b5 !important; font-size: 36px;">DEWI</span>
                         </a>
                     </div>
                     <!-- /Logo -->
