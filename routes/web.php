@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Website\AuthController;
 use App\Http\Controllers\Website\HomeController;
 use App\Http\Controllers\Website\VendorController;
+use App\Http\Controllers\Website\BudgetController;
 use App\Http\Controllers\Website\DepartmentController;
 use App\Http\Controllers\Website\UserController;
 use App\Http\Controllers\Website\SettingController;
@@ -25,6 +26,16 @@ Route::group(['namespace' => 'Website', 'as' => 'website.'], function() {
         Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
         Route::group(['middleware' => ['role:admin']], function () {
+            Route::group(['prefix' => 'budget', 'as' => 'budget.'], function () {
+                Route::get('/list', [BudgetController::class, 'list'])->name('list');
+                Route::get('/list_ajax', [BudgetController::class, 'list_ajax'])->name('list_ajax');
+                Route::get('/create', [BudgetController::class, 'create'])->name('create');
+                Route::post('/store', [BudgetController::class, 'store'])->name('store');
+                Route::get('/edit/{uuid}', [BudgetController::class, 'edit'])->name('edit');
+                Route::post('/update/{uuid}', [BudgetController::class, 'update'])->name('update');
+                Route::post('destroy', [BudgetController::class, 'destroy'])->name('destroy');
+            });
+
             Route::group(['prefix' => 'department', 'as' => 'department.'], function () {
                 Route::get('/list', [DepartmentController::class, 'list'])->name('list');
                 Route::get('/list_ajax', [DepartmentController::class, 'list_ajax'])->name('list_ajax');

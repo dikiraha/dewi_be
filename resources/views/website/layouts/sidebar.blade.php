@@ -46,6 +46,15 @@
         </li>
         <!-- Apps -->
         <!-- Pages -->
+        @php
+            $budgetRoutes = ['website.budget.list', 'website.budget.create', 'website.budget.edit'];
+        @endphp
+        <li class="menu-item {{ in_array(Route::currentRouteName(), $budgetRoutes) ? 'active' : '' }}">
+            <a href="{{ route('website.budget.list') }}" class="menu-link">
+                <i class="menu-icon tf-icons mdi mdi-cash-multiple"></i>
+                <div data-i18n="Budgets">Budgets</div>
+            </a>
+        </li>
         {{-- Purchase Requisition --}}
         @php
             $folderRoutes = ['website.folder.list', 'website.folder.create', 'website.folder.edit'];
